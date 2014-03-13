@@ -1,6 +1,7 @@
 package vb.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Justin on 3/10/14.
@@ -21,6 +22,12 @@ public class Result {
     }
 
     public ArrayList<Integer> getValues() {
+        // Sort (accordingly)
+        Collections.sort(values);
+
+        // Reverse to descending
+        Collections.reverse(values);
+
         return values;
     }
 

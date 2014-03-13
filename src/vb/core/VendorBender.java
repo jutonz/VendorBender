@@ -2,7 +2,6 @@ package vb.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -61,53 +60,38 @@ public class VendorBender {
         while (getSumOfValues() >= 40) {
 
             // Create a new result to populate.
-            Result r = new Result();
+            Result result = new Result();
 
-            int total = r.getSum();
+            int total = result.getSum();
             for (int i = 0; ; ) {
                 int cur = values.get(i);
                 if (total + cur < 40) {
-                    r.add(values.remove(i));
+                    result.add(values.remove(i));
                     total += cur;
                 } else {
                     break;
                 }
             }
 
-//            // Add the first (largest) item to the result
-//            r.add(values.remove(0));
-//
-//            // Add more (large) items while the total is under 40
-//            int total = r.getSum();
-//            Iterator<Integer> it = values.iterator();
-//            while (it.hasNext()) {
-//                int cur = it.next();
-//                if (total + cur < 40) {
-//                    it.remove();
-//                    r.add(cur);
-//                    total += cur;
-//                } else {
-//                    break;
-//                }
-//            }
-//
-            // Repeatedly add the largest small item that fits
-            while (r.getSum() < 40) {
+            // Now we want to add small values so we get as close as possible to 40.
+            // Loop while we have less than 40.
+            while (result.getSum() < 40) {
+                // Iterate through values until we get one that gets us 40.
                 for (int i = values.size() - 1; i >= 0; i--) {
-                    if (r.getSum() + values.get(i) < 40)
-                        continue;
-                    else {
-                        if (i == values.size() - 1) {
-                            r.add(values.remove(i));
-                            break;
-                        }
-                        r.add(values.remove(i+1));
+                    int value = values.get(i);
+                    int newTotal = result.getSum() + value;
+                    if (newTotal >= 40) {
+                        // If the value gets us to over 40, add it and stop.
+//                        result.add(values.remove(i == values.size() - 1 ? i : i + 1));
+                        values.remove((Integer) value);
+                        result.add(value);
                         break;
                     }
                 }
             }
 
-            results.add(r);
+            // Add what we have found to the list of solutions and loop again.
+            results.add(result);
         }
     }
 

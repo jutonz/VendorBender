@@ -47,10 +47,9 @@ public class VendorBenderTest {
         vb.add(20);
         vb.add(3);
         Result r43 = vb.getResults().get(0);
-        Assert.assertEquals(43, r43.getSum());
-//        Assert.assertEquals(20, (int)r43.getValues().get(0));
-//        Assert.assertEquals(20, (int)r43.getValues().get(1));
-//        Assert.assertEquals(3, (int) r43.getValues().get(2));
+        Assert.assertEquals(40, r43.getSum());
+        Assert.assertEquals(20, (int)r43.getValues().get(0));
+        Assert.assertEquals(20, (int)r43.getValues().get(1));
         vb.clear();
 
         // Sums to 43 (extra values)
@@ -65,10 +64,13 @@ public class VendorBenderTest {
         Assert.assertEquals(43, r.getSum());
         Assert.assertEquals(18, (int)r.getValues().get(0));
         Assert.assertEquals(14, (int)r.getValues().get(1));
-        Assert.assertEquals(6, (int)r.getValues().get(2));
-        Assert.assertEquals(5, (int)r.getValues().get(3));
+        Assert.assertEquals(11, (int)r.getValues().get(2));
         vb.clear();
+    }
 
+    @Test
+    public void testSkipLowestLowValues() {
+        // Sums to 45. Should return 15 15 15, not 15 15 5 15
         vb.add(15);
         vb.add(15);
         vb.add(15);
