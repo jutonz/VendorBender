@@ -2,8 +2,13 @@ package vb.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 /**
+ * Contains the result of a calculation.
+ * The values contained in this object should sum to
+ * at least 40.
+ *
  * Created by Justin on 3/10/14.
  */
 public class Result {
@@ -11,6 +16,12 @@ public class Result {
 
     public Result(ArrayList<Integer> values) {
         this.values = values;
+    }
+
+    public Result(Set<Integer> set) {
+        this(new ArrayList<Integer>());
+        for (Integer i : set)
+            add(i);
     }
 
     public Result() {

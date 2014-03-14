@@ -1,8 +1,9 @@
 package vb.core;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+
+import java.util.*;
 
 /**
  * Created by Justin on 10th March 2014.
@@ -45,8 +46,107 @@ public class VendorBender {
         isCalculated = false;
     }
 
-
     public void calculate() {
+
+        // Start by sorting the list.
+        Collections.sort(values);
+
+        // Then reverse it to descending order.
+        Collections.reverse(values);
+
+        // Create a list of all the possible combinations of our values.
+        Set<Set<Integer>> sets = getSetFromValues();
+
+        int sumTo = 40;
+        while (!sets.isEmpty()) {
+            Set<Set<Integer>> setsThatSumTo = getSetsThatSumTo(sets, sumTo);
+            while (!setsThatSumTo.isEmpty()) {
+                Set<Integer> set = setsThatSumTo.iterator().next();
+                results.add(new Result(set));
+                for (Integer i : set) {
+                    values.remove(i);
+                }
+                sets = getSetFromValues();
+                setsThatSumTo = getSetsThatSumTo(sets, sumTo);
+            }
+            sumTo++;
+            sets = getSetFromValues();
+        }
+
+        // Let everyone else know we've calculated the result
+        isCalculated = true;
+    }
+
+    /**
+     * Creates a power set from the current values. This is essentially
+     * a list of all possible combinations of numbers.
+     *
+     * @return a power set of the values.
+     */
+    private Set<Set<Integer>> getSetFromValues() {
+        // Create a power set of all possible combinations of our values.
+        ImmutableSet.Builder<Integer> builder = ImmutableSet.builder();
+        for (Integer i : values)
+            builder.add(i);
+        Set<Set<Integer>> sets = Sets.powerSet(builder.build());
+
+        // Remove all options that do not sum to 40-50
+        return trimExcessive(sets);
+    }
+
+    /**
+     * Removes from the specified list all entries that
+     * do not sum to 40-50.
+     *
+     * @param sets list of sets to trim
+     */
+    private Set<Set<Integer>> trimExcessive(Set<Set<Integer>> sets) {
+        HashSet<Set<Integer>> newSets = Sets.newHashSet();
+        for (Set<Integer> set : sets) {
+            int sum = getSumOf(set);
+            if (sum >= 40 && sum <= 50)
+                newSets.add(set);
+        }
+        return newSets;
+    }
+
+    /**
+     * Finds a subset of the specified set of sets
+     * for which all sets sum to the specified value.
+     *
+     * @param sets list of all sets
+     * @param sum minimum value of returned sets
+     * @return all sets that sum to at least the specified value
+     */
+    private Set<Set<Integer>> getSetsThatSumTo(Set<Set<Integer>> sets, int sum) {
+        HashSet<Set<Integer>> newSets = Sets.newHashSet();
+        for (Set<Integer> set : sets) {
+            int setSum = getSumOf(set);
+            if (setSum == sum)
+                newSets.add(set);
+        }
+        return newSets;
+    }
+
+    /**
+     * Returns the sum of the specified set of integers.
+     *
+     * @param set to sum
+     * @return the sum of the set
+     */
+    private int getSumOf(Set<Integer> set) {
+        int sum = 0;
+        for (Integer i : set)
+            sum += i;
+        return sum;
+    }
+
+    /**
+     * This is an older version of the calculate method. This performs the
+     * same task as the new version, but less accurately. It is,
+     * however, considerably faster.
+     */
+    public void calculateLegacy() {
 
         // Let everyone else know we've calculated the results
         isCalculated = true;
@@ -82,7 +182,6 @@ public class VendorBender {
                     int newTotal = result.getSum() + value;
                     if (newTotal >= 40) {
                         // If the value gets us to over 40, add it and stop.
-//                        result.add(values.remove(i == values.size() - 1 ? i : i + 1));
                         values.remove((Integer) value);
                         result.add(value);
                         break;
@@ -94,24 +193,31 @@ public class VendorBender {
             results.add(result);
         }
     }
-
-    public static void main(String[] args) {
-        VendorBender vb = new VendorBender();
-        vb.add(16);
-        vb.add(16);
-        vb.add(14);
-
-        vb.calculate();
-
-        LinkedList<Result> results = vb.getResults();
-
-        for (Result r : results) {
-            System.out.print("Result (" + r.getSum() + "): ");
-            for (Integer i : r.getValues()) {
-                System.out.print(i + " ");
-            }
-            System.out.println();
-        }
-    }
+//
+//    public static void main(String[] args) {
+//        VendorBender vb = new VendorBender();
+//        vb.add(5);
+//        vb.add(14);
+//        vb.add(10);
+//        vb.add(10);
+//        vb.add(20);
+//        vb.add(15);
+//        vb.add(19);
+//        vb.add(19);
+//        vb.add(11);
+//        vb.add(7);
+//
+//        vb.calculate();
+//
+//        LinkedList<Result> results = vb.getResults();
+//
+//        for (Result r : results) {
+//            System.out.print("Result (" + r.getSum() + "): ");
+//            for (Integer i : r.getValues()) {
+//                System.out.print(i + " ");
+//            }
+//            System.out.println();
+//        }
+//    }
 
 }

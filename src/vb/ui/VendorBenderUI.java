@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
+ * A basic text-based interface for interaction with VendorBender.
+ *
  * Created by Justin on 3/11/14.
  */
 public class VendorBenderUI {
@@ -33,11 +35,11 @@ public class VendorBenderUI {
 
         for (Result r : results) {
             System.out.print("Result (" + r.getSum() + "): ");
-            for (Integer i : r.getValues()) {
+            for (Integer i : r.getValues())
                 System.out.print(i + " ");
-            }
             System.out.println();
         }
+        System.out.println("Total: " + results.size());
     }
 
 
