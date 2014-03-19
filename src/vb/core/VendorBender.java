@@ -22,17 +22,36 @@ public class VendorBender {
         isCalculated = false;
     }
 
+    /**
+     * Adds a value to the calculation. This value will
+     * be used in determining the most appropriate combination
+     * of values to reach 40.
+     *
+     * @param value to add
+     */
     public void add(int value) {
         values.add(value);
         isCalculated = false;
     }
 
+    /**
+     * Returns the results of the calculation. Each
+     * Result object contains a list of values which
+     * sum to as close as possible to 40.
+     *
+     * @return a list of results
+     */
     public LinkedList<Result> getResults() {
         if (!isCalculated)
             calculate();
         return results;
     }
 
+    /**
+     * Gets the sum of the current values.
+     *
+     * @return the sum of the current values.
+     */
     public int getSumOfValues() {
         int sum = 0;
         for (Integer i : values)
@@ -40,12 +59,25 @@ public class VendorBender {
         return sum;
     }
 
+    /**
+     * Clears the list of values and results.
+     * Results will be recalculated when new
+     * values are added.
+     */
     public void clear() {
         values.clear();
         results.clear();
         isCalculated = false;
     }
 
+    /**
+     * Determines, for the specified values, what combination
+     * of numbers will result in a sum of 40. Ideally all results
+     * calculated would sum to 40, but because of real-world constraints
+     * this is not always possible. In these situations a sum
+     * of as close as possible to 40 will be calculated. The maximum
+     * value for a result is 50.
+     */
     public void calculate() {
 
         // Start by sorting the list.
