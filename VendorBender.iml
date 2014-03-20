@@ -17,6 +17,16 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="guava-16.0.1" level="project" />
+    <orderEntry type="library" name="commons-io-2.4" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.11.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

@@ -25,13 +25,20 @@ public class VendorBender {
     /**
      * Adds a value to the calculation. This value will
      * be used in determining the most appropriate combination
-     * of values to reach 40.
+     * of values to reach 40. Only values between 0 and 20
+     * are valid. If an invalid parameter is passed, this
+     * method does nothing (but returns false).
      *
      * @param value to add
+     * @return true if the value was valid (0-20), false otherwise.
      */
-    public void add(int value) {
-        values.add(value);
-        isCalculated = false;
+    public boolean add(int value) {
+        if (value > 0 && value <= 20) {
+            values.add(value);
+            isCalculated = false;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -171,6 +178,16 @@ public class VendorBender {
         for (Integer i : set)
             sum += i;
         return sum;
+    }
+
+    /**
+     * Returns whether the values added to the VendorBender
+     * have been calculated.
+     *
+     * @return whether values have been calculated.
+     */
+    public boolean isCalculated() {
+        return isCalculated;
     }
 
     /**
